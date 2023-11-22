@@ -21,7 +21,12 @@ En este repositorio se encontrarán algunas herramientas interesantes para la ci
 Es para obtener los hashes de los documentos.
 
 ## Scripting en Bash
-Un analisis de puertos completo utilizando BASH.
+Es un código orientado a facilitar el uso de nmap proporcionando un menú con opciones más sencillas y casi automáticas, sus funciones pueden ser para:
+
+- Hacer un escaneo de red
+- Hacerle un escaneo a un host individual "·""!"
+- Escaneo UDP
+- Escaneo basado en un script
 
 ## WebScraping
 Obtener información de una manera automatizada y sencilla.
