@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# Verifica si nmap está instalado
+if command -v nmap &> /dev/null; then
+  echo "nmap está instalado. Continuando con la ejecución del script."
+else
+  echo "nmap no está instalado."
+  read -p "¿Deseas instalar nmap ahora? (y/n): " respuesta
+
+  if [ "$respuesta" == "y" ]; then
+    # Instala nmap (puedes ajustar el comando según tu sistema operativo)
+    sudo apt-get update
+    sudo apt-get install nmap
+    echo "nmap se ha instalado correctamente."
+  else
+    echo "El script requiere nmap para continuar. Instálalo manualmente e intenta nuevamente."
+    exit 1
+  fi
+fi
+
+# Función para realizar un escaneo de red con Nmap
+escaneo_de_red() {
+    read -p "Ingresa la subred a escanear (ejemplo: 192.168.1.0/24): " subred
+    read -p "Ingresa el nombre del archivo de salida: " output_file
+    nmap -oN "$output_file" "$subred"
+}
+
+# Función para realizar un escaneo individual con Nmap
+escaneo_individual() {
+    read -p "Ingresa la dirección IP a escanear: " ip
+    read -p "Ingresa el nombre del archivo de salida: " output_file
+    nmap -oN "$output_file" "$ip"
+}
+
+# Función para realizar un escaneo UDP con Nmap
+escaneo_udp() {
+    read -p "Ingresa la dirección IP a escanear: " ip
+    read -p "Ingresa el nombre del archivo de salida: " output_file
+    nmap -sU -oN "$output_file" "$ip"
+}
+
+# Función para realizar un escaneo de script con Nmap
+escaneo_de_script() {
+    read -p "Ingresa el nombre del script Nmap (ejemplo: vuln, http-enum, etc.): " script
+    read -p "Ingresa la dirección IP a escanear: " ip
+    read -p "Ingresa el nombre del archivo de salida: " output_file
+    nmap -sC -oN "$output_file" --script "$script" "$ip"
+}
+
+
+# Menú principal
+while true; do
+    clear
+    echo "Menú:"
+    echo "1. Escaneo de red"
+    echo "2. Escaneo individual"
+    echo "3. Escaneo UDP"
+    echo "4. Escaneo de Script"
+    echo "5. Salir"
+    read -p "Selecciona una opción: " opcion
+
+    case $opcion in
+        1)
+            escaneo_de_red
+            ;;
+        2)
+            escaneo_individual
+            ;;
+        3)
+            escaneo_udp
+            ;;
+        4)
+            escaneo_de_script
+            ;;
+        5)
+            echo "¡Adiós!"
+            exit 0
+            ;;
+        *)
+            echo "Opción no válida. Por favor, selecciona una opción válida."
+            ;;
+    esac
+    read -p "Presiona Enter para continuar..."
+done
